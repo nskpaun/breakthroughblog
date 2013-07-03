@@ -18,7 +18,8 @@
     NSString *category;
     
     NavigationPopoverView *_navMenu;
-    
+    BOOL loadingMore;
+    int page;
 }
 
 -(id)initWithPosts:(NSArray*)p withCategory:(NSString*)category;

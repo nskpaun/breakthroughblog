@@ -56,6 +56,7 @@
             existing.text = txtNotes;
             [existing update];
         } else if (txtNotes.length>0 && !existing) {
+            [post save];
             Note *note = [[Note alloc] initWithQuestion:[NSNumber numberWithInteger:i] withPost:post.pid withText:txtNotes];
             [note save];
         }

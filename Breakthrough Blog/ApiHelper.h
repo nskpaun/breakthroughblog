@@ -11,8 +11,10 @@
 @interface ApiHelper : NSObject {
     NSMutableData* _receivedData;
     NSURLConnection *conn;
+    void (^callbackBlock)(NSArray*);
 }
 
 -(void)updateDatabase;
+-(void)getPage:(int)page forCategory:(NSString*)category withCallback:(void (^)(NSArray*))callback;
 
 @end

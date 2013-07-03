@@ -25,19 +25,26 @@
 @property (nonatomic, strong) UIImageView* tempImageView;
 @property (nonatomic) BOOL isNew;
 
+extern int dbPostsPerCategory;
+extern int postThresholdForNew;
+
 extern NSString *const PURPOSE;
 extern NSString *const PASSION;
 extern NSString *const COMPASSION;
 extern NSString *const CONVICTION;
 
 +(Post*)getPostById:(NSString*)idStr;
++(NSArray*)postsFromJSON:(NSArray*)array;
 +(NSArray*)firstFromEachCategory;
 +(NSArray*)postsForCategory:(NSString*)category;
 +(NSArray*)postsWithNotes;
 +(void)loadPostsIntoDatabase:(NSArray*)array;
 +(int)newPostsForCategroy:(NSString*)category;
++(void)updateCache:(NSString*)category posts:(NSArray*)posts;
 
+-(void)save;
 -(void)markAsRead;
+-(void)loadPostImage;
 
 
 @end

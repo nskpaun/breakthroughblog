@@ -10,6 +10,7 @@
 #import "Post.h"
 #import "DrillDownViewController.h"
 #import "BreakthroughBlog.h"
+#import  <QuartzCore/QuartzCore.h>
 
 @interface HomeViewController ()
 
@@ -30,9 +31,19 @@
     if (_navMenu.superview) {
         [_navMenu removeFromSuperview];
     } else {
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        
+        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+            UIGraphicsBeginImageContextWithOptions(window.bounds.size, NO, [UIScreen mainScreen].scale);
+        else
+            UIGraphicsBeginImageContext(window.bounds.size);
+        
+        [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        UIGraphicsEndImageContext();
         [self.view addSubview:_navMenu];
     }
-    
 }
 - (IBAction)compassionPressed:(id)sender {
     DrillDownViewController *ddvc = [[DrillDownViewController alloc] initWithPosts:[Post postsForCategory:COMPASSION] withCategory:@"COMPASSION"];
@@ -57,18 +68,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-//    {
-//        CGSize result = [[UIScreen mainScreen] bounds].size;
-//        if(result.height == 480)
-//        {
-//            // iPhone Classic
-//        }
-//        if(result.height == 568)
-//        {
-//            self.view.frame = CGRectMake(0, 0, 480, 568);
-//        }
-//    }
+
     _navMenu = [NavigationPopoverView navigationView];
     NSArray *topFour = [Post firstFromEachCategory];
     
@@ -150,6 +150,10 @@
     convictionAct = nil;
     compassionAct = nil;
     passionAct = nil;
+    compassionView = nil;
+    convictionView = nil;
+    purposeView = nil;
+    passionView = nil;
     [super viewDidUnload];
 }
 @end

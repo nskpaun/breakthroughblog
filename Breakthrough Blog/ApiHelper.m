@@ -20,6 +20,17 @@ NSString const *HOST_API  =                         @"www.bacc.cc/api/app.php?";
     return self;
 }
 
+-(void)getPage:(int)page forCategory:(NSString*)category withCallback:(void (^)(NSArray*))callback
+{
+    callbackBlock = callback;
+    NSString *params = [NSString stringWithFormat: @"action=top&page=%d&category=%@",page,[category capitalizedString] ];
+    NSString *urlstring = [NSString stringWithFormat:@"%@%@%@",HTTP_PRE,HOST_API,params];
+    NSMutableURLRequest* request = [NSMutableURLRequest
+                                    requestWithURL: [NSURL URLWithString: urlstring]];
+    [request setHTTPMethod:@"GET"];
+    conn = [[NSURLConnection alloc] initWithRequest: request delegate:self];
+}
+
 -(void) updateDatabase {
     NSString *params = @"action=top";
     NSString *urlstring = [NSString stringWithFormat:@"%@%@%@",HTTP_PRE,HOST_API,params];
@@ -79,7 +90,12 @@ NSString const *HOST_API  =                         @"www.bacc.cc/api/app.php?";
 {
     NSError *error;
     NSArray *array = [NSJSONSerialization JSONObjectWithData:_receivedData options:kNilOptions error:&error];
-    [Post loadPostsIntoDatabase:array];
+    if (callbackBlock) {
+        callbackBlock(array);
+    } else {
+        [Post loadPostsIntoDatabase:array];
+    }
+
     
 }
 

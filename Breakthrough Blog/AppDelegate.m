@@ -20,8 +20,13 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    
-    self.homeVC = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+         self.homeVC = [[HomeViewController alloc] initWithNibName:@"HomeViewControllerTall" bundle:nil];
+    } else {
+         self.homeVC = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+    }
+
     UINavigationController *hnc = [[UINavigationController alloc] initWithRootViewController:self.homeVC];
     
     self.navController = hnc;

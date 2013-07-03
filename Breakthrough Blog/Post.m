@@ -15,6 +15,9 @@ static NSMutableDictionary *postCache;
 
 @implementation Post
 
+int dbPostsPerCategory = 5;
+int postThresholdForNew = 604800;
+
 @synthesize pid;
 @synthesize title;
 @synthesize permalink;
@@ -74,19 +77,19 @@ NSString *const PURPOSE = @"Purpose";
     FMDatabase *db = [BreakthroughBlogAppDelegate getDatabase];
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
-    FMResultSet *result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = 'Passion';"];
+    FMResultSet *result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = 'Passion' order by postdate desc;"];
     [result next];
     [array addObject:[Post postFromResultSet:result]];
     
-    result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = 'Purpose';"];
+    result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = 'Purpose' order by postdate desc;"];
     [result next];
     [array addObject:[Post postFromResultSet:result]];
     
-    result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = 'Conviction';"];
+    result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = 'Conviction' order by postdate desc;"];
     [result next];
     [array addObject:[Post postFromResultSet:result]];
     
-    result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = 'Compassion';"];
+    result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = 'Compassion' order by postdate desc;"];
     [result next];
     [array addObject:[Post postFromResultSet:result]];
     
@@ -99,26 +102,16 @@ NSString *const PURPOSE = @"Purpose";
 
 +(NSArray*)postsWithNotes
 {
-    NSString *cacheKey =@"notes";
-    if (postCache) {
-        NSArray *cached = [postCache objectForKey:cacheKey];
-        if (cached) {
-            return cached;
-        }
-    } else {
-        postCache = [[NSMutableDictionary alloc] init];
-    }
+
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
     
     FMDatabase *db = [BreakthroughBlogAppDelegate getDatabase];
-    FMResultSet *result = [ db executeQuery:@"SELECT DISTINCT POST FROM NOTE"];
+    FMResultSet *result = [ db executeQuery:@"SELECT DISTINCT POST FROM NOTE order by editeddate desc"];
+    
     while ([result next]){
         [array addObject:[Post getPostById:[result stringForColumn:@"POST"]]];
     }
-    
-    [postCache setObject:array forKey:cacheKey];
-    
     
     return array;
     
@@ -141,7 +134,7 @@ NSString *const PURPOSE = @"Purpose";
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
     
-    FMResultSet *result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = (?);",category];
+    FMResultSet *result = [ db executeQuery:@"SELECT * FROM Post where CATEGORY = (?) order by postdate desc limit 5;",category];
     while ([result next]){
         [array addObject:[Post postFromResultSet:result]];
     }
@@ -151,6 +144,18 @@ NSString *const PURPOSE = @"Purpose";
     [postCache setObject:array forKey:cacheKey];
     
     return array;
+}
+
++(void)updateCache:(NSString*)category posts:(NSArray*)posts
+{
+
+    NSString *cacheKey =[ NSString stringWithFormat:@"%@_cat", [category capitalizedString] ];
+    if (postCache) {
+        [postCache setObject:posts forKey:cacheKey];
+    } else {
+        postCache = [[NSMutableDictionary alloc] init];
+        [postCache setObject:posts forKey:cacheKey];
+    }
 }
 
 
@@ -167,7 +172,7 @@ NSString *const PURPOSE = @"Purpose";
     post.category = [result stringForColumn:CATEGORY_KEY];
     post.picUrl = [result stringForColumn:PICURL_KEY];
     int seconds = [result intForColumn:POSTDATE_KEY];
-    if ( ([[NSDate date] timeIntervalSince1970] - 604800) < seconds && [result intForColumn:NEW_KEY] == 1 ) {
+    if ( ([[NSDate date] timeIntervalSince1970] - postThresholdForNew) < seconds && [result intForColumn:NEW_KEY] == 1 ) {
         post.isNew = YES;
     } else {
         post.isNew = NO;
@@ -236,45 +241,71 @@ NSString *const PURPOSE = @"Purpose";
     [db close];
 }
 
++(void)cleanDB
+{
+        FMDatabase *db = [BreakthroughBlogAppDelegate getDatabase];
+        NSString *deleteString = @"DELETE FROM post WHERE id NOT IN (SELECT DISTINCT POST FROM NOTE) AND id NOT IN ( SELECT p1.id FROM POST p1 WHERE p1.category = (?) ORDER BY p1.postdate DESC LIMIT 5) AND category = (?);";
+        [ db executeUpdate:deleteString,PASSION, PASSION];
+        NSLog(@"Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
+        [ db executeUpdate:deleteString,COMPASSION, COMPASSION];
+        NSLog(@"Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
+        [ db executeUpdate:deleteString,PURPOSE,  PURPOSE];
+        NSLog(@"Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
+        [ db executeUpdate:deleteString,CONVICTION, CONVICTION];
+        NSLog(@"Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
+        
+        [db close];
+}
+
 +(void)loadPostsIntoDatabase:(NSArray*)array
 {
     dispatch_queue_t queue = dispatch_queue_create("cc.bacc.BreakthroughBlog.db", NULL);
     dispatch_async(queue, ^{
-        for ( NSDictionary *dict in array ) {
-            NSString *category = [dict objectForKey:@"name"];
-            NSArray *posts = [dict objectForKey:@"posts"];
-            for (NSDictionary *postDict in posts) {
-                Post *post = [[Post alloc] init];
-                post.pid = [postDict objectForKey:@"id"];
-                post.author = [postDict objectForKey:@"author"];
-                NSString *dateString = [postDict objectForKey:@"date"];
-                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                post.postDate = [dateFormat dateFromString:dateString];
-                
-                post.title = [postDict objectForKey:@"title"];
-                post.permalink = [postDict objectForKey:@"link"];
-                post.htmlContent = [postDict objectForKey:@"content"];
-                NSString *contentNoHtml = [Post stringByStrippingHTML:post.htmlContent];
-                if (contentNoHtml.length > 100) {
-                    post.excerpt = [contentNoHtml substringToIndex:99];
-                } else {
-                    post.excerpt = @"No Excerpt Available";
-                }
-                
-                NSArray *array = [postDict objectForKey:@"images"];
-                
-                post.picUrl = [array objectAtIndex:0];
-                post.category = category;
-                [post save];
-                
+        for (Post *post in [Post postsFromJSON:array]) {
+            [post save];
+        }
+        
+        [Post cleanDB];
+        
+    });
+}
++(NSArray*)postsFromJSON:(NSArray*)array
+{
+    NSMutableArray* postObjects = [[NSMutableArray alloc] init];
+    for ( NSDictionary *dict in array ) {
+        NSString *category = [dict objectForKey:@"name"];
+        NSArray *posts = [dict objectForKey:@"posts"];
+        for (NSDictionary *postDict in posts) {
+            Post *post = [[Post alloc] init];
+            post.pid = [postDict objectForKey:@"id"];
+            post.author = [postDict objectForKey:@"author"];
+            NSString *dateString = [postDict objectForKey:@"date"];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            post.postDate = [dateFormat dateFromString:dateString];
+            
+            post.title = [postDict objectForKey:@"title"];
+            post.permalink = [postDict objectForKey:@"link"];
+            post.htmlContent = [postDict objectForKey:@"content"];
+            NSString *contentNoHtml = [Post stringByStrippingHTML:post.htmlContent];
+            if (contentNoHtml.length > 100) {
+                post.excerpt = [contentNoHtml substringToIndex:99];
+            } else {
+                post.excerpt = @"No Excerpt Available";
             }
+            
+            NSArray *array = [postDict objectForKey:@"images"];
+            
+            post.picUrl = [array objectAtIndex:0];
+            post.category = category;
+            
+            [postObjects addObject:post];
             
         }
         
-
-        
-    });
+    }
+    
+    return postObjects;
 }
 
 -(void)markAsRead
@@ -297,7 +328,7 @@ NSString *const PURPOSE = @"Purpose";
 {
     FMDatabase *db = [BreakthroughBlogAppDelegate getDatabase];
 
-    int count = [db intForQuery:@"select count(*) from post where category = (?) and postdate > (?) and new = 1;",category, [NSNumber numberWithInt:([[NSDate date] timeIntervalSince1970] - 604800)]];
+    int count = [db intForQuery:@"select count(*) from post where category = (?) and postdate > (?) and new = 1;",category, [NSNumber numberWithInt:([[NSDate date] timeIntervalSince1970] - postThresholdForNew)]];
 
     
     [db close];

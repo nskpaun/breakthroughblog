@@ -11,6 +11,7 @@
 #import "PostPreviewCell.h"
 #import "BreakthroughBlog.h"
 #import "ReadViewController.h"
+#import "ApiHelper.h"
 
 @interface DrillDownViewController ()
 
@@ -67,6 +68,9 @@
     if (_navMenu.superview) {
         [_navMenu removeFromSuperview];
     } else {
+        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+
+        UIGraphicsEndImageContext();
         [self.view addSubview:_navMenu];
     }
 }
@@ -75,6 +79,8 @@
 {
     [super viewDidLoad];
     [titleLabel setText:category];
+    loadingMore = NO;
+    page = (posts.count+5-1)/5;
     
     // Do any additional setup after loading the view from its nib.
 }
@@ -132,6 +138,43 @@
     Post *post = [posts objectAtIndex:indexPath.row];
     ReadViewController *rvc = [[ReadViewController alloc] initWithPost:post withCategory:category];
     [BreakthroughBlogAppDelegate.navController pushViewController:rvc animated:YES];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
+    CGPoint offset = aScrollView.contentOffset;
+    CGRect bounds = aScrollView.bounds;
+    CGSize size = aScrollView.contentSize;
+    UIEdgeInsets inset = aScrollView.contentInset;
+    float y = offset.y + bounds.size.height - inset.bottom;
+    float h = size.height;
+    
+    float reload_distance = 10;
+    if(y > h + reload_distance && !loadingMore) {
+        loadingMore = YES;
+        
+        void (^callback)(NSArray*) = ^(NSArray* array) {
+            NSArray *parsedArray = [Post postsFromJSON:array];
+            for ( Post *post in parsedArray) {
+                [post loadPostImage];
+            }
+            NSMutableArray *newPosts = [[NSMutableArray alloc] initWithArray:posts];
+            
+            [newPosts addObjectsFromArray:parsedArray];
+            posts = newPosts;
+            [Post updateCache:category posts:posts];
+            [postTable reloadData];
+            if (parsedArray.count>1){
+                page++;
+                loadingMore = NO;
+            }
+        
+            
+        };
+        
+        ApiHelper *helper = [[ApiHelper alloc] init];
+
+        [helper getPage:page+1 forCategory:category withCallback:callback];
+    }
 }
 
 @end

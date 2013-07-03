@@ -26,6 +26,11 @@
     IBOutlet UIImageView *purposeAct;
     IBOutlet UIImageView *convictionAct;
     
+    IBOutlet UIView *compassionView;
+    IBOutlet UIView *convictionView;
+    IBOutlet UIView *purposeView;
+    IBOutlet UIView *passionView;
+    
     NavigationPopoverView *_navMenu;
 }
 

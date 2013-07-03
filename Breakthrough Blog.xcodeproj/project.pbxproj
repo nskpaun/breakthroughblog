@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E80789341784891A00B25D10 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E80789331784891A00B25D10 /* Default-568h@2x.png */; };
+		E80789381784892B00B25D10 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E80789371784892B00B25D10 /* Default@2x.png */; };
+		E807893A17848BD900B25D10 /* HomeViewControllerTall.xib in Resources */ = {isa = PBXBuildFile; fileRef = E807893917848BD900B25D10 /* HomeViewControllerTall.xib */; };
 		E80801AA17694378001675C2 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = E8F8BE8017691F0400B03250 /* ImageDownload.m */; };
 		E80801AE17694A0E001675C2 /* NavigationPopoverView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E80801AD17694A0E001675C2 /* NavigationPopoverView.xib */; };
 		E80801AF17695099001675C2 /* NavigationPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = E80801AC176949EE001675C2 /* NavigationPopoverView.m */; };
@@ -72,6 +75,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E80789331784891A00B25D10 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		E80789371784892B00B25D10 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		E807893917848BD900B25D10 /* HomeViewControllerTall.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewControllerTall.xib; sourceTree = "<group>"; };
 		E80801AB176949EE001675C2 /* NavigationPopoverView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationPopoverView.h; sourceTree = "<group>"; };
 		E80801AC176949EE001675C2 /* NavigationPopoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationPopoverView.m; sourceTree = "<group>"; };
 		E80801AD17694A0E001675C2 /* NavigationPopoverView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NavigationPopoverView.xib; sourceTree = "<group>"; };
@@ -179,6 +185,8 @@
 		E8A36B251768F7BA00DA2BB6 = {
 			isa = PBXGroup;
 			children = (
+				E80789371784892B00B25D10 /* Default@2x.png */,
+				E80789331784891A00B25D10 /* Default-568h@2x.png */,
 				E8A36B371768F7BA00DA2BB6 /* Breakthrough Blog */,
 				E8A36B501768F7BA00DA2BB6 /* Breakthrough BlogTests */,
 				E8A36B301768F7BA00DA2BB6 /* Frameworks */,
@@ -262,6 +270,7 @@
 				E8A36B611768F8D600DA2BB6 /* HomeViewController.h */,
 				E8A36B621768F8D600DA2BB6 /* HomeViewController.m */,
 				E8A36B631768F8D600DA2BB6 /* HomeViewController.xib */,
+				E807893917848BD900B25D10 /* HomeViewControllerTall.xib */,
 				E80801B7176A3339001675C2 /* DrillDownViewController.h */,
 				E80801B8176A3339001675C2 /* DrillDownViewController.m */,
 				E80801B9176A3339001675C2 /* DrillDownViewController.xib */,
@@ -443,6 +452,9 @@
 				E82441351778CBBD00EC8CFC /* Color-Blob-Background-iPhone5.png in Resources */,
 				E82441361778CBBD00EC8CFC /* Color-Blob-Background.png in Resources */,
 				E82441381778D51800EC8CFC /* bacc_wp.db in Resources */,
+				E80789341784891A00B25D10 /* Default-568h@2x.png in Resources */,
+				E80789381784892B00B25D10 /* Default@2x.png in Resources */,
+				E807893A17848BD900B25D10 /* HomeViewControllerTall.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,7 +566,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -585,7 +597,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

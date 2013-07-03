@@ -28,6 +28,7 @@
 @property (strong, nonatomic) IBOutlet UIView *convictionView;
 @property (strong, nonatomic) IBOutlet UIView *notesView;
 
+@property (strong, nonatomic) IBOutlet UIButton *transparentButton;
 
 +(NavigationPopoverView*)navigationView;
 

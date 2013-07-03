@@ -56,10 +56,10 @@
             NSString *textAreaHtml;
             Note *note = [Note getNoteForPostId:post.pid andQuestion:[NSNumber numberWithInteger:count/2]];
             if (note) {
-                 textAreaHtml = [NSString stringWithFormat:@"<textarea class=\"cta\" id=\"target%d\"  placeholder=\"Add you notes...\" rows=\"1\">%@</textarea>",count/2, note.text];
+                 textAreaHtml = [NSString stringWithFormat:@"<textarea class=\"cta\" id=\"target%d\"  placeholder=\"Add your notes...\" rows=\"1\">%@</textarea>",count/2, note.text];
                 
             } else {
-               textAreaHtml = [NSString stringWithFormat:@"<textarea class=\"cta\" id=\"target%d\" placeholder=\"Add you notes...\" rows=\"1\"></textarea>",count/2];
+               textAreaHtml = [NSString stringWithFormat:@"<textarea class=\"cta\" id=\"target%d\" placeholder=\"Add your notes...\" rows=\"1\"></textarea>",count/2];
             }
             count++;
 
