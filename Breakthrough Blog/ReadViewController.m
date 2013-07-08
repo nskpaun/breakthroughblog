@@ -33,7 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [titleLabel setText:post.title];
     
     [Note getNotesForPostId:post.pid];
     post.tempImageView = backgroundImage;
@@ -74,6 +74,7 @@
 - (void)viewDidUnload {
     backgroundImage = nil;
     contentView = nil;
+    titleLabel = nil;
     [super viewDidUnload];
 }
 @end

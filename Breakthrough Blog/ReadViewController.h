@@ -15,6 +15,7 @@
     
     IBOutlet UIImageView *backgroundImage;
     IBOutlet UIWebView *contentView;
+    IBOutlet UILabel *titleLabel;
     
 }
 
