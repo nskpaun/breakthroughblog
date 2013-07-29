@@ -179,7 +179,7 @@
     
     cell.bannerNewIndicator.hidden = !post.isNew;
     
-    [cell.drilldownTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:19.0]];
+    [cell.drilldownTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:24.0]];
     [cell.drilldownTitle setTextColor:[UIColor whiteColor]];
     [cell.drilldownExcerpt setTextColor:[UIColor whiteColor]];
     [cell.drilldownExcerpt setFont:[UIFont fontWithName:@"Avenir-MediumOblique" size:14.0]];
