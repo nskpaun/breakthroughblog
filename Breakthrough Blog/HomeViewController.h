@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 #import "NavigationPopoverView.h"
 
-@interface HomeViewController : UIViewController {
+@interface HomeViewController : UIViewController <UIAlertViewDelegate,MFMailComposeViewControllerDelegate> {
     
     IBOutlet UIImageView *compassionImage;
     IBOutlet UIImageView *convictionImage;

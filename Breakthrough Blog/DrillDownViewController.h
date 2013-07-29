@@ -11,8 +11,13 @@
 
 @interface DrillDownViewController : UIViewController <UITableViewDataSource,UITableViewDelegate> {
     
+    NSString *gaCategory;
+    
+    IBOutlet UIView *noNotesView;
+    IBOutlet UIImageView *carrot;
     IBOutlet UILabel *titleLabel;
     IBOutlet UITableView *postTable;
+    IBOutlet UIButton *myNotesButton;
     
     NSArray *posts;
     NSString *category;
@@ -20,6 +25,7 @@
     NavigationPopoverView *_navMenu;
     BOOL loadingMore;
     int page;
+//    NSMutableDictionary *categoryDict;
 }
 
 -(id)initWithPosts:(NSArray*)p withCategory:(NSString*)category;

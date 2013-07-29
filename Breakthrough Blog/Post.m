@@ -179,18 +179,32 @@ NSString *const PURPOSE = @"Purpose";
     }
     post.postDate = [NSDate dateWithTimeIntervalSince1970:seconds];
     
-    [post loadPostImage];
+    [post loadPostImage:YES];
     
     return post;
 }
 
--(void)loadPostImage
+-(void)loadPostImage:(BOOL*)saveToDisk
 {
+    self.blurredImage = [BreakthroughBlogAppDelegate loadImage:[NSString stringWithFormat:@"blurred-%@.png",self.pid]];
+    self.croppedImage = [BreakthroughBlogAppDelegate loadImage:    [NSString stringWithFormat:@"cropped-%@.png",self.pid]];
+    
+    if (!self.blurredImage || !self.croppedImage) {
+    
     dispatch_queue_t queue = dispatch_queue_create("cc.bacc.BreakthroughBlog", NULL);
     dispatch_async(queue, ^{
 
         self.postImage = [ImageDownload imageForUrl:self.picUrl];
-        CGImageRef imageRef = CGImageCreateWithImageInRect([self.postImage CGImage], CGRectMake(0, 0, 320, 104));
+        int space = (640 - self.postImage.size.width)/2;
+        CGImageRef imageRef;
+        if ( space > 0 ) {
+            imageRef = CGImageCreateWithImageInRect([self.postImage CGImage], CGRectMake(space, 0, 640, 208));
+            
+        } else {
+            imageRef = CGImageCreateWithImageInRect([self.postImage CGImage], CGRectMake(0, 0, 640, 208));
+        }
+
+
         self.croppedImage = [UIImage imageWithCGImage:imageRef];
         
         CIImage *inputImage = [[CIImage alloc] initWithImage:self.postImage];
@@ -227,8 +241,37 @@ NSString *const PURPOSE = @"Purpose";
                 }
 
             }
+            if(saveToDisk) [self savePicsToDisk];
         });
     });
+    } else {
+        if (self.tempImageView) {
+            if ( self.tempImageView.frame.size.height>300) {
+                
+                
+                
+                [self.tempImageView setImage:self.blurredImage];
+                
+                
+                
+            } else {
+                [self.tempImageView setImage:self.croppedImage];
+            }
+            
+        }
+    }
+}
+
+-(void)savePicsToDisk
+{
+    [BreakthroughBlogAppDelegate saveImage:self.blurredImage withName:[NSString stringWithFormat:@"blurred-%@.png",self.pid]];
+    [BreakthroughBlogAppDelegate saveImage:self.croppedImage withName:[NSString stringWithFormat:@"cropped-%@.png",self.pid]];
+}
+
+-(void)removePicsFromDisk
+{
+    [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"blurred-%@.png",self.pid]];
+    [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"cropped-%@.png",self.pid]];
 }
 
 -(void)save
@@ -243,18 +286,42 @@ NSString *const PURPOSE = @"Purpose";
 
 +(void)cleanDB
 {
-        FMDatabase *db = [BreakthroughBlogAppDelegate getDatabase];
-        NSString *deleteString = @"DELETE FROM post WHERE id NOT IN (SELECT DISTINCT POST FROM NOTE) AND id NOT IN ( SELECT p1.id FROM POST p1 WHERE p1.category = (?) ORDER BY p1.postdate DESC LIMIT 5) AND category = (?);";
-        [ db executeUpdate:deleteString,PASSION, PASSION];
-        NSLog(@"Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
-        [ db executeUpdate:deleteString,COMPASSION, COMPASSION];
-        NSLog(@"Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
-        [ db executeUpdate:deleteString,PURPOSE,  PURPOSE];
-        NSLog(@"Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
-        [ db executeUpdate:deleteString,CONVICTION, CONVICTION];
-        NSLog(@"Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
+    FMDatabase *db = [BreakthroughBlogAppDelegate getDatabase];
+    
+    NSString *selectString = @"SELECT id FROM post WHERE id NOT IN (SELECT DISTINCT POST FROM NOTE) AND id NOT IN ( SELECT p1.id FROM POST p1 WHERE p1.category = (?) ORDER BY p1.postdate DESC LIMIT 5) AND category = (?);";
+    
+    FMResultSet *result = [ db executeQuery: selectString, PASSION, PASSION];
+    while ([result next]) {
+        [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"blurred-%@.png",[result stringForColumn:ID_KEY]]];
+        [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"cropped-%@.png",[result stringForColumn:ID_KEY]]];
+    }
+    
+    result = [ db executeQuery: selectString, COMPASSION, COMPASSION];
+    while ([result next]) {
+        [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"blurred-%@.png",[result stringForColumn:ID_KEY]]];
+        [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"cropped-%@.png",[result stringForColumn:ID_KEY]]];
+    }
+    
+    result = [ db executeQuery: selectString, PURPOSE, PURPOSE];
+    while ([result next]) {
+        [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"blurred-%@.png",[result stringForColumn:ID_KEY]]];
+        [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"cropped-%@.png",[result stringForColumn:ID_KEY]]];
+    }
+    
+    result = [ db executeQuery: selectString, CONVICTION, CONVICTION];
+    while ([result next]) {
+        [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"blurred-%@.png",[result stringForColumn:ID_KEY]]];
+        [BreakthroughBlogAppDelegate deleteImage:[NSString stringWithFormat:@"cropped-%@.png",[result stringForColumn:ID_KEY]]];
+    }
+    
+    
+    NSString *deleteString = @"DELETE FROM post WHERE id NOT IN (SELECT DISTINCT POST FROM NOTE) AND id NOT IN ( SELECT p1.id FROM POST p1 WHERE p1.category = (?) ORDER BY p1.postdate DESC LIMIT 5) AND category = (?);";
+    [ db executeUpdate:deleteString,PASSION, PASSION];
+    [ db executeUpdate:deleteString,COMPASSION, COMPASSION];
+    [ db executeUpdate:deleteString,PURPOSE,  PURPOSE];
+    [ db executeUpdate:deleteString,CONVICTION, CONVICTION];
         
-        [db close];
+    [db close];
 }
 
 +(void)loadPostsIntoDatabase:(NSArray*)array
@@ -287,7 +354,7 @@ NSString *const PURPOSE = @"Purpose";
             post.title = [postDict objectForKey:@"title"];
             post.permalink = [postDict objectForKey:@"link"];
             post.htmlContent = [postDict objectForKey:@"content"];
-            NSString *contentNoHtml = [Post stringByStrippingHTML:post.htmlContent];
+            NSString *contentNoHtml = [[[Post stringByStrippingHTML:post.htmlContent] stringByReplacingOccurrencesOfString:@"&nbsp" withString:@" "] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             if (contentNoHtml.length > 100) {
                 post.excerpt = [contentNoHtml substringToIndex:99];
             } else {
@@ -335,4 +402,5 @@ NSString *const PURPOSE = @"Purpose";
     
     return count;
 }
+
 @end

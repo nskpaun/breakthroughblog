@@ -15,6 +15,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *drilldownTitle;
 @property (strong, nonatomic) IBOutlet UIImageView *drilldownImage;
 @property (strong, nonatomic) IBOutlet UILabel *drilldownExcerpt;
+@property (strong, nonatomic) IBOutlet UILabel *authorLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *bannerNewIndicator;
+@property (strong, nonatomic) IBOutlet UILabel *dateLabel;
 
 @end

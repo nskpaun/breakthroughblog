@@ -10,6 +10,7 @@
 #import "Post.h"
 #import "DrillDownViewController.h"
 #import "BreakthroughBlog.h"
+#import "AboutUsViewController.h"
 #import  <QuartzCore/QuartzCore.h>
 
 @interface HomeViewController ()
@@ -26,6 +27,18 @@
         // Custom initialization
     }
     return self;
+}
+- (IBAction)aboutPressed:(id)sender {
+    AboutUsViewController *auvc = [[AboutUsViewController alloc] initWithNibName:@"AboutUsViewController" bundle:nil];
+    [BreakthroughBlogAppDelegate.navController pushViewController:auvc animated:YES];
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:HOME_CAT withAction:ABOUT_PRESSED_ACT withLabel:@"" withValue:0];
+    
+    
+}
+- (IBAction)myNotesPressed:(id)sender {
+    DrillDownViewController *ddvc = [[DrillDownViewController alloc] initWithPosts:[Post postsWithNotes] withCategory:@"MY NOTES"];
+    [BreakthroughBlogAppDelegate.navController pushViewController:ddvc animated:YES];
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:HOME_CAT withAction:NOTE_PRESSED_ACT withLabel:@"" withValue:0];
 }
 - (IBAction)navigationPressed:(id)sender {
     if (_navMenu.superview) {
@@ -88,6 +101,95 @@
     p3.tempImageView = compassionImage;
     [compassionImage setImage:p3.croppedImage];
 
+    if ([Post newPostsForCategroy:COMPASSION]==0) {
+        compassionCounter.hidden = YES;
+        compassionAct.hidden = YES;
+    } else {
+        compassionCounter.hidden = NO;
+        compassionAct.hidden = NO;
+    }
+    
+    
+    if ([Post newPostsForCategroy:PASSION]==0) {
+        passionCounter.hidden = YES;
+        passionAct.hidden = YES;
+    } else {
+        passionCounter.hidden = NO;
+        passionAct.hidden = NO;
+    }
+    
+    if ([Post newPostsForCategroy:PURPOSE]==0) {
+        purposeCounter.hidden = YES;
+        purposeAct.hidden = YES;
+    } else {
+        purposeCounter.hidden = NO;
+        purposeAct.hidden = NO;
+    }
+    
+    if ([Post newPostsForCategroy:CONVICTION]==0) {
+        convictionCounter.hidden = YES;
+        convictionAct.hidden = YES;
+    } else {
+        convictionCounter.hidden = NO;
+        convictionAct.hidden = NO;
+    }
+    
+    [compassionCounter setText:[NSString stringWithFormat:@"%d",[Post newPostsForCategroy:COMPASSION]  ]];
+    [convictionCounter setText:[NSString stringWithFormat:@"%d",[Post newPostsForCategroy:CONVICTION]  ]];
+    [passionCounter setText:[NSString stringWithFormat:@"%d",[Post newPostsForCategroy:PASSION]  ]];
+    [purposeCounter setText:[NSString stringWithFormat:@"%d",[Post newPostsForCategroy:PURPOSE]  ]];
+    
+    int openCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"openedCount"];
+    
+    if (openCount > -1 && openCount%2==0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rate Us"
+                                                        message:@"We hope you are enjoying BACC Breakthroughs.  Please help us promote our app and make it better."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Later"
+                                              otherButtonTitles:@"Show Love",@"Give Feedback",nil];
+        [alert show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ( buttonIndex == 2 ) {
+        
+        NSString *email = @"appfeedback@bacc.cc";
+        
+        if([MFMailComposeViewController canSendMail]) {
+            [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:HOME_CAT withAction:RATING_ACT withLabel:@"FEEDBACK" withValue:[NSNumber numberWithInt:buttonIndex ]];
+            NSString *subject = @"Feedback for App";
+            MFMailComposeViewController *mailCont = [[MFMailComposeViewController alloc] init];
+            mailCont.mailComposeDelegate = self;
+            [mailCont setToRecipients:[NSArray arrayWithObject:email]];
+            [mailCont setSubject:subject];
+            [BreakthroughBlogAppDelegate.navController presentModalViewController:mailCont animated:YES];
+        }
+        
+    } else if (buttonIndex == 1) {
+        [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:HOME_CAT withAction:RATING_ACT withLabel:@"RATING" withValue:[NSNumber numberWithInt:buttonIndex ]];
+        [[NSUserDefaults standardUserDefaults] setInteger:-5 forKey:@"openedCount"];
+        NSString *str = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa";
+        str = [NSString stringWithFormat:@"%@/wa/viewContentsUserReviews?", str];
+        str = [NSString stringWithFormat:@"%@id=", str];
+        
+        // Here is the app id from itunesconnect
+        str = [NSString stringWithFormat:@"%@yourAppIDHere", str];
+        
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        
+    } else {
+        [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:HOME_CAT withAction:RATING_ACT withLabel:@"LATER" withValue:[NSNumber numberWithInt:buttonIndex ]];
+    }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    [BreakthroughBlogAppDelegate.navController dismissModalViewControllerAnimated:YES];
+    if (result == MFMailComposeResultSent) {
+        [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:HOME_CAT withAction:FEEDBACK_SENT_ACT withLabel:@"" withValue:[NSNumber numberWithInt:result ]];
+        [[NSUserDefaults standardUserDefaults] setInteger:-5 forKey:@"openedCount"];
+    }
+        
 }
 
 - (void)viewDidAppear:(BOOL)animated

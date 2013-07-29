@@ -9,14 +9,58 @@
 #import "AppDelegate.h"
 #import "ApiHelper.h"
 #import "HomeViewController.h"
+#import "GAI.h"
 
 @implementation AppDelegate
+
+@synthesize tracker;
+
+NSString *const GAID  = @"UA-42798880-1";
+NSString *openedCount = @"openedCount";
+
+NSString *const HOME_CAT = @"HOME_CAT;";
+NSString *const DRILL_CAT = @"DRILL_CAT;";
+NSString *const READ_CAT = @"READ_CAT;";
+NSString *const ABOUT_CAT = @"ABOUT_CAT;";
+NSString *const NOTE_PRESSED_ACT = @"NOTE_PRESSED_ACT;";
+NSString *const BACK_PRESSED_ACT = @"BACK_PRESSED_ACT;";
+NSString *const CAT_PRESSED_ACT = @"CAT_PRESSED_ACT;";
+NSString *const ABOUT_PRESSED_ACT = @"ABOUT_PRESSED_ACT;";
+NSString *const RATING_ACT = @"RATING_ACT;";
+NSString *const FEEDBACK_SENT_ACT = @"FEEDBACK_SENT_ACT;";
+NSString *const NOTES_EMPTY_SCREEN_ACT = @"NOTES_EMPTY_SCREEN_ACT;";
+NSString *const NOTE_SELECTED_ACT = @"NOTE_SELECTED_ACT;";
+NSString *const ARTICLE_PRESSED_ACT = @"ARTICLE_PRESSED_ACT;";
+NSString *const LOAD_MORE_ACT = @"LOAD_MORE_ACT;";
+NSString *const LOAD_MORE_FAILURE_ACT = @"LOAD_MORE_FAILURE_ACT;";
+NSString *const LOAD_MORE_SUCCESS_ACT = @"LOAD_MORE_SUCCESS_ACT;";
+NSString *const NAV_PRESSED_ACT = @"NAV_PRESSED_ACT;";
+NSString *const NAV_DISMISSED_ACT = @"NAV_DISMISSED_ACT;";
+NSString *const NAV_SELECTION_ACT = @"NAV_SELECTION_ACT;";
+NSString *const SHARE_ACT = @"SHARE_ACT;";
+NSString *const NOTE_SAVED_ACT = @"NOTE_SAVED_ACT;";
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Optional: automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+    [GAI sharedInstance].dispatchInterval = 20;
+    // Optional: set debug to YES for extra debugging information.
+    [GAI sharedInstance].debug = YES;
+    // Create tracker instance.
+    self.tracker = [[GAI sharedInstance] trackerWithTrackingId:GAID];
+    
     [self checkAndCreateDatabase];
     [[[ApiHelper alloc] init] updateDatabase];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:openedCount]) {
+        int count = [userDefaults integerForKey:openedCount];
+        [userDefaults setInteger:count+1 forKey:openedCount];
+    } else {
+        [userDefaults setInteger:1 forKey:openedCount];
+    }
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -26,7 +70,7 @@
     } else {
          self.homeVC = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
     }
-
+    
     UINavigationController *hnc = [[UINavigationController alloc] initWithRootViewController:self.homeVC];
     
     self.navController = hnc;
@@ -63,6 +107,8 @@
 	success = [fileManager fileExistsAtPath:databasePath];
 	// If the database already exists then return without doing anything
 	if(success) return;
+    
+    [self copyOverImages];
 	// If not then proceed to copy the database from the application to
 	// the users filesystem
 	// Get the path to the database in the application package
@@ -76,6 +122,58 @@
 						  error:nil];
 }
 
+-(void)copyOverImages
+{
+    NSString * resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString * documentsPath = resourcePath;
+    NSError * error;
+    NSArray * directoryContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsPath error:&error];
+    
+    NSArray       *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString  *documentsDirectory = [paths objectAtIndex:0];
+    
+    for (NSString *fname in directoryContents) {
+
+        if ( [fname hasPrefix:@"blurred"] || [fname hasPrefix:@"cropped"] ){
+            NSData *imgData = [[NSFileManager defaultManager] contentsAtPath:[documentsPath stringByAppendingPathComponent:fname]];
+            NSString  *filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,fname];
+            [imgData writeToFile:filePath atomically:YES];
+        }
+    }
+}
+
+-(void) saveImage:(UIImage*)image withName:(NSString*)fname {
+    NSData *imgData = UIImagePNGRepresentation(image);
+    
+    if ( imgData )
+    {
+        NSArray       *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString  *documentsDirectory = [paths objectAtIndex:0];
+        
+        NSString  *filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,fname];
+        [imgData writeToFile:filePath atomically:YES];
+        
+    }
+    
+}
+
+-(UIImage*) loadImage:(NSString*)fname
+{
+    NSArray       *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString  *documentsDirectory = [paths objectAtIndex:0];
+    NSString  *filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,fname];
+    return [UIImage imageWithContentsOfFile:filePath];
+}
+
+-(void)deleteImage:(NSString*)fname
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray       *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString  *documentsDirectory = [paths objectAtIndex:0];
+    NSString  *filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory,fname];
+    
+    [fileManager removeItemAtPath:filePath error:NULL];
+}
 
 -(FMDatabase*)getDatabase {
     if (!_database) {
@@ -86,7 +184,7 @@
         // the directory path for the Databases.db file
         // the directory path for the 0000000000000001.db file
 		NSString *databasePath = [libraryDir stringByAppendingPathComponent:@"WP/"];
-        NSLog(databasePath);
+        //NSLog(databasePath);
         // the full path for the Databases.db file
         // the full path for the 0000000000000001.db file
 		NSString *databaseFile = [databasePath

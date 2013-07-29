@@ -44,7 +44,7 @@ extern NSString *const CONVICTION;
 
 -(void)save;
 -(void)markAsRead;
--(void)loadPostImage;
+-(void)loadPostImage:(BOOL)saveToDisk;
 
 
 @end

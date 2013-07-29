@@ -10,6 +10,8 @@
 #import "BreakthroughBlog.h"
 #import "ArticleFormatter.h"
 #import "Note.h"
+#import "ShareView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ReadViewController ()
 
@@ -37,12 +39,19 @@
     
     [Note getNotesForPostId:post.pid];
     post.tempImageView = backgroundImage;
+    [[webViewContainer layer] setCornerRadius:3];
     [contentView loadHTMLString:[ArticleFormatter formatPostToHtml:post] baseURL:[NSURL URLWithString:@"http://noah.tecarta.com/grow/"]];
 
     [backgroundImage setImage:post.blurredImage];
 }
+- (IBAction)shareButtonPressed:(id)sender {
+    ShareView *sv = [[ShareView alloc] initWithFrame:CGRectMake(0, 0, 320, 480) withPost:post];
+    [self.view addSubview:sv];
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:READ_CAT withAction:SHARE_ACT withLabel:@"PRESSED" withValue:0];
+}
 
 - (IBAction)backButtonPressed:(id)sender {
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:READ_CAT withAction:BACK_PRESSED_ACT withLabel:@"" withValue:0];
     
 
     NSInteger questions = [[contentView stringByEvaluatingJavaScriptFromString:@"$('textarea').length"] integerValue];
@@ -62,7 +71,7 @@
         }
     }
 
-    [BreakthroughBlogAppDelegate.navController popViewControllerAnimated:YES];
+    [BreakthroughBlogAppDelegate.navController popViewControllerAnimated:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,6 +84,7 @@
     backgroundImage = nil;
     contentView = nil;
     titleLabel = nil;
+    webViewContainer = nil;
     [super viewDidUnload];
 }
 @end

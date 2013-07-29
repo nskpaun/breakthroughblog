@@ -13,6 +13,7 @@
     Post *post;
     NSString *category;
     
+    IBOutlet UIView *webViewContainer;
     IBOutlet UIImageView *backgroundImage;
     IBOutlet UIWebView *contentView;
     IBOutlet UILabel *titleLabel;

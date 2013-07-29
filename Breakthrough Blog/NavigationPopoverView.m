@@ -70,31 +70,47 @@
             break;
         }
     }
-    result.frame = CGRectMake(0,44, 320, 416);
+    result.frame = CGRectMake(0,-151, 320, 416);
     
     return result;
 }
 
 - (IBAction)purposePressed:(id)sender {
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:DRILL_CAT withAction:NAV_SELECTION_ACT withLabel:PURPOSE withValue:0];
     DrillDownViewController *ddvc = [[DrillDownViewController alloc] initWithPosts:[Post postsForCategory:PURPOSE] withCategory:@"PURPOSE"];
     [BreakthroughBlogAppDelegate.navController pushViewController:ddvc animated:YES];
 }
 
 - (IBAction)mynotesPressed:(id)sender {
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:DRILL_CAT withAction:NAV_SELECTION_ACT withLabel:@"MY NOTES" withValue:0];
     DrillDownViewController *ddvc = [[DrillDownViewController alloc] initWithPosts:[Post postsWithNotes] withCategory:@"MY NOTES"];
     [BreakthroughBlogAppDelegate.navController pushViewController:ddvc animated:YES];
 }
 - (IBAction)compassionPressed:(id)sender {
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:DRILL_CAT withAction:NAV_SELECTION_ACT withLabel:COMPASSION withValue:0];
     DrillDownViewController *ddvc = [[DrillDownViewController alloc] initWithPosts:[Post postsForCategory:COMPASSION] withCategory:@"COMPASSION"];
     [BreakthroughBlogAppDelegate.navController pushViewController:ddvc animated:YES];
 }
 - (IBAction)convictionPressed:(id)sender {
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:DRILL_CAT withAction:NAV_SELECTION_ACT withLabel:CONVICTION withValue:0];
     DrillDownViewController *ddvc = [[DrillDownViewController alloc] initWithPosts:[Post postsForCategory:CONVICTION] withCategory:@"CONVICTION"];
     [BreakthroughBlogAppDelegate.navController pushViewController:ddvc animated:YES];
 }
 - (IBAction)passionPressed:(id)sender {
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:DRILL_CAT withAction:NAV_SELECTION_ACT withLabel:PASSION withValue:0];
     DrillDownViewController *ddvc = [[DrillDownViewController alloc] initWithPosts:[Post postsForCategory:PASSION] withCategory:@"PASSION"];
     [BreakthroughBlogAppDelegate.navController pushViewController:ddvc animated:YES];
+}
+- (IBAction)transparentButtonPressed:(id)sender {
+    [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:DRILL_CAT withAction:NAV_DISMISSED_ACT withLabel:@"Invisible Button" withValue:0];
+    [UIView animateWithDuration:0.2
+                     animations:^{
+                         [self setFrame:CGRectMake(0,-151, 320, 416)];
+                     } completion:^(BOOL finished) {
+                         [self removeFromSuperview];
+                     }
+     ];
+
 }
 
 
