@@ -143,7 +143,7 @@
     
     if (openCount > -1 && openCount%2==0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rate Us"
-                                                        message:@"We hope you are enjoying BACC Breakthroughs.  Please help us promote our app and make it better."
+                                                        message:@"We hope you are enjoying BACC Breakthroughs.  Please help promote our app and make it better."
                                                        delegate:self
                                               cancelButtonTitle:@"Later"
                                               otherButtonTitles:@"Show Love",@"Give Feedback",nil];

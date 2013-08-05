@@ -27,6 +27,10 @@
     return self;
 }
 
+- (IBAction)webButtonPressed:(id)sender {
+ [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.bacc.cc"]];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

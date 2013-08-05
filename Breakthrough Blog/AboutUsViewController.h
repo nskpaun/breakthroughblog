@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AboutUsViewController : UIViewController
+@interface AboutUsViewController : UIViewController {
+    
+    IBOutlet UIButton *baccweb;
+    
+}
 
 @end
