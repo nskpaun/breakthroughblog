@@ -97,7 +97,7 @@
 									<int key="traits">0</int>
 									<double key="pointSize">40</double>
 								</object>
-								<object class="NSFont" key="IBUIFont" id="541227733">
+								<object class="NSFont" key="IBUIFont" id="1057477324">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">40</double>
 									<int key="NSfFlags">16</int>
@@ -128,7 +128,7 @@
 									<int key="traits">0</int>
 									<double key="pointSize">16</double>
 								</object>
-								<object class="NSFont" key="IBUIFont" id="547203236">
+								<object class="NSFont" key="IBUIFont" id="215637414">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">16</double>
 									<int key="NSfFlags">16</int>
@@ -177,7 +177,7 @@
 									<int key="type">1</int>
 									<double key="pointSize">16</double>
 								</object>
-								<reference key="IBUIFont" ref="547203236"/>
+								<reference key="IBUIFont" ref="215637414"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIButton" id="627457661">
@@ -279,7 +279,7 @@
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<reference key="IBUIFontDescription" ref="911496397"/>
-								<reference key="IBUIFont" ref="541227733"/>
+								<reference key="IBUIFont" ref="1057477324"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUILabel" id="1044794130">
@@ -301,7 +301,7 @@
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<reference key="IBUIFontDescription" ref="1109824"/>
-								<reference key="IBUIFont" ref="547203236"/>
+								<reference key="IBUIFont" ref="215637414"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIImageView" id="562939100">
@@ -340,7 +340,7 @@
 								<int key="IBUIBaselineAdjustment">0</int>
 								<int key="IBUITextAlignment">1</int>
 								<reference key="IBUIFontDescription" ref="790995461"/>
-								<reference key="IBUIFont" ref="547203236"/>
+								<reference key="IBUIFont" ref="215637414"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIButton" id="239184266">
@@ -427,7 +427,7 @@
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<reference key="IBUIFontDescription" ref="911496397"/>
-								<reference key="IBUIFont" ref="541227733"/>
+								<reference key="IBUIFont" ref="1057477324"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUILabel" id="382225058">
@@ -449,7 +449,7 @@
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<reference key="IBUIFontDescription" ref="1109824"/>
-								<reference key="IBUIFont" ref="547203236"/>
+								<reference key="IBUIFont" ref="215637414"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIImageView" id="511963893">
@@ -488,7 +488,7 @@
 								<int key="IBUIBaselineAdjustment">0</int>
 								<int key="IBUITextAlignment">1</int>
 								<reference key="IBUIFontDescription" ref="790995461"/>
-								<reference key="IBUIFont" ref="547203236"/>
+								<reference key="IBUIFont" ref="215637414"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIButton" id="571498690">
@@ -575,7 +575,7 @@
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<reference key="IBUIFontDescription" ref="911496397"/>
-								<reference key="IBUIFont" ref="541227733"/>
+								<reference key="IBUIFont" ref="1057477324"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUILabel" id="125368402">
@@ -597,7 +597,7 @@
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<reference key="IBUIFontDescription" ref="1109824"/>
-								<reference key="IBUIFont" ref="547203236"/>
+								<reference key="IBUIFont" ref="215637414"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIImageView" id="936223273">
@@ -636,7 +636,7 @@
 								<int key="IBUIBaselineAdjustment">0</int>
 								<int key="IBUITextAlignment">1</int>
 								<reference key="IBUIFontDescription" ref="790995461"/>
-								<reference key="IBUIFont" ref="547203236"/>
+								<reference key="IBUIFont" ref="215637414"/>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIButton" id="107807055">
@@ -681,7 +681,7 @@
 							<object class="IBUIButton" id="29522281">
 								<reference key="NSNextResponder" ref="636173125"/>
 								<int key="NSvFlags">1316</int>
-								<string key="NSFrame">{{272, 0}, {48, 44}}</string>
+								<string key="NSFrame">{{283, 4}, {30, 35}}</string>
 								<reference key="NSSuperview" ref="636173125"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="332315424"/>
@@ -698,7 +698,7 @@
 								<reference key="IBUINormalTitleShadowColor" ref="484039071"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">086254-rounded-glossy-black-icon-business-document4.png</string>
+									<string key="NSResourceName">notes.png</string>
 								</object>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<int key="type">2</int>
@@ -1397,6 +1397,45 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">HomeViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="aboutPressed:">id</string>
+						<string key="compassionPressed:">id</string>
+						<string key="convictionPressed:">id</string>
+						<string key="myNotesPressed:">id</string>
+						<string key="navigationPressed:">id</string>
+						<string key="passionPressed:">id</string>
+						<string key="purposePressed:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="aboutPressed:">
+							<string key="name">aboutPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="compassionPressed:">
+							<string key="name">compassionPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="convictionPressed:">
+							<string key="name">convictionPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="myNotesPressed:">
+							<string key="name">myNotesPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="navigationPressed:">
+							<string key="name">navigationPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="passionPressed:">
+							<string key="name">passionPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="purposePressed:">
+							<string key="name">purposePressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="compassionAct">UIImageView</string>
 						<string key="compassionCounter">UILabel</string>
@@ -1501,8 +1540,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="086254-rounded-glossy-black-icon-business-document4.png">{420, 420}</string>
 			<string key="Activity-Bubble.png">{26, 16}</string>
+			<string key="notes.png">{48, 56}</string>
 			<string key="photo_overlay.png">{321, 106}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
