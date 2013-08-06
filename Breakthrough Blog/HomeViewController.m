@@ -141,9 +141,9 @@
     
     int openCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"openedCount"];
     
-    if (openCount > -1 && openCount%2==0) {
+    if (openCount > -1 && openCount%2==0 && openCount < 5) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rate Us"
-                                                        message:@"We hope you are enjoying BACC Breakthroughs.  Please help promote our app and make it better."
+                                                        message:@"We hope you are enjoying BACC Breakthroughs. Please help promote our app and make it better."
                                                        delegate:self
                                               cancelButtonTitle:@"Later"
                                               otherButtonTitles:@"Show Love",@"Give Feedback",nil];
@@ -158,7 +158,7 @@
         
         if([MFMailComposeViewController canSendMail]) {
             [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:HOME_CAT withAction:RATING_ACT withLabel:@"FEEDBACK" withValue:[NSNumber numberWithInt:buttonIndex ]];
-            NSString *subject = @"Feedback for App";
+            NSString *subject = @"Feedback for iOS App";
             MFMailComposeViewController *mailCont = [[MFMailComposeViewController alloc] init];
             mailCont.mailComposeDelegate = self;
             [mailCont setToRecipients:[NSArray arrayWithObject:email]];
