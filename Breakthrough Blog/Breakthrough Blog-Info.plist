@@ -11,6 +11,7 @@
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>circle.jpg</string>
+		<string>bacc-icon.png</string>
 	</array>
 	<key>CFBundleIcons</key>
 	<dict>
@@ -19,6 +20,7 @@
 			<key>CFBundleIconFiles</key>
 			<array>
 				<string>circle.jpg</string>
+				<string>bacc-icon.png</string>
 			</array>
 		</dict>
 	</dict>

@@ -32,7 +32,7 @@
                       "<subheading>%@</subheading>" \
                       "  </li><mydivider>___________________________________</mydivider> <np>%@" \
                       " <strong>Notes:</strong> </br> <ul> [raw_html_snippet id=\"baccnote\"] </ul></np> " \
-                      "</br></br></br></br></br></br></br></br></br></br></br> </div>" \
+                      "         </div>" \
                       "</body>" \
                       "</html>"
                       ,

@@ -12,6 +12,7 @@
 		14F102AF17B1778E0004DECB /* notes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F102AC17B1778C0004DECB /* notes@2x.png */; };
 		14F102B017B1778E0004DECB /* share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F102AD17B1778D0004DECB /* share@2x.png */; };
 		2778518917B15F0C00B6B9D2 /* baseurl in Resources */ = {isa = PBXBuildFile; fileRef = 2778518817B15F0C00B6B9D2 /* baseurl */; };
+		277851A317B18A6200B6B9D2 /* bacc-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 277851A217B18A6200B6B9D2 /* bacc-icon.png */; };
 		E80789341784891A00B25D10 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E80789331784891A00B25D10 /* Default-568h@2x.png */; };
 		E80789381784892B00B25D10 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E80789371784892B00B25D10 /* Default@2x.png */; };
 		E807893A17848BD900B25D10 /* HomeViewControllerTall.xib in Resources */ = {isa = PBXBuildFile; fileRef = E807893917848BD900B25D10 /* HomeViewControllerTall.xib */; };
@@ -145,6 +146,7 @@
 		14F102AC17B1778C0004DECB /* notes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notes@2x.png"; sourceTree = "<group>"; };
 		14F102AD17B1778D0004DECB /* share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share@2x.png"; sourceTree = "<group>"; };
 		2778518817B15F0C00B6B9D2 /* baseurl */ = {isa = PBXFileReference; lastKnownFileType = folder; path = baseurl; sourceTree = "<group>"; };
+		277851A217B18A6200B6B9D2 /* bacc-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bacc-icon.png"; sourceTree = "<group>"; };
 		E80789331784891A00B25D10 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		E80789371784892B00B25D10 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		E807893917848BD900B25D10 /* HomeViewControllerTall.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewControllerTall.xib; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 		E8A36B251768F7BA00DA2BB6 = {
 			isa = PBXGroup;
 			children = (
+				277851A217B18A6200B6B9D2 /* bacc-icon.png */,
 				E85F199017A6F49E00EF24BE /* icon114.png */,
 				E85F198E17A6CB4900EF24BE /* CoreData.framework */,
 				E8474434178DE0DA001A61CA /* Accounts.framework */,
@@ -744,6 +747,7 @@
 				14F102AE17B1778E0004DECB /* back@2x.png in Resources */,
 				14F102AF17B1778E0004DECB /* notes@2x.png in Resources */,
 				14F102B017B1778E0004DECB /* share@2x.png in Resources */,
+				277851A317B18A6200B6B9D2 /* bacc-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
