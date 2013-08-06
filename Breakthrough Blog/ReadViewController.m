@@ -76,7 +76,7 @@
         }
     }
 
-    [BreakthroughBlogAppDelegate.navController popViewControllerAnimated:NO];
+    [BreakthroughBlogAppDelegate.navController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning

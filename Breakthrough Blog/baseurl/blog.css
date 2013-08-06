@@ -34,7 +34,7 @@ mydivider {
 
 .cta { 
 	-webkit-appearance: none; 
-	width:115%; 
+	width: 100%;
 	border: 1px solid #6e6e6e; 
 	border-radius: 2px; 
 	padding: 5px; 
@@ -45,6 +45,5 @@ mydivider {
 } 
 
 div5 {
-	margin-left: -18%; 
 	width: 95%;
 }

@@ -199,7 +199,7 @@
     [BreakthroughBlogAppDelegate.tracker sendEventWithCategory:gaCategory withAction:ARTICLE_PRESSED_ACT withLabel:post.title withValue:[NSNumber numberWithBool:post.isNew]];
     
     ReadViewController *rvc = [[ReadViewController alloc] initWithPost:post withCategory:category];
-    [BreakthroughBlogAppDelegate.navController pushViewController:rvc animated:NO];
+    [BreakthroughBlogAppDelegate.navController pushViewController:rvc animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
