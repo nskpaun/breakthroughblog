@@ -13,26 +13,37 @@
 
 +(NSString*)formatPostToHtml:(Post*)post
 {
-    NSString *javaScript = @"<script src=\"jquery-1.8.1.min.js\"></script> <script src=\"jquery.autogrowtextarea.min.js\"> </script>";
-    
-    NSString *cssString = @"<style type='text/css'>  blockquote {font-style:italic;} div { width: 280px; margin-left: 7px;font-family: Avenir; color:#000000; } h1 { font-family: Avenir; color:#567bce; float:center; } subheading { font-family: Avenir; color:#6a645e; } np { font-family: Avenir; } mydivider { color:#ffffff; witdth:90% height:5px;} .cta { -webkit-appearance: none; width:115%; border: 1px solid #6e6e6e; border-radius: 2px; padding: 5px; margin-left:2%; ; font-family: Avenir; color:#6a645e; font-size:16px;} div5 {margin-left: -18%; width: 95%;} </style>";
-    
-    NSString *metaString = @"<meta name = \"viewport\" content = \"width = 300, initial-scale = 1.0, user-scalable = yes\">";
-    NSString *titleString = [NSString stringWithFormat:@"<h1>%@</h1>", post.title ];
-    NSString *authorString = [NSString stringWithFormat:@"<subheading>BY %@</subheading>", [post.author uppercaseString] ];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MMMM dd, yyyy"];
-    NSString *dateString = [NSString stringWithFormat:@"<subheading>%@</subheading>", [formatter stringFromDate:post.postDate]];
-
     
-    NSString *contentString = [NSString stringWithFormat:@"%@ <strong>Notes:</strong> </br> <ul> [raw_html_snippet id=\"baccnote\"] </ul>", post.htmlContent ];
+	NSString *html = [NSString stringWithFormat:@"<html lang=\"en\">" \
+                      "<head>" \
+                      "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" \
+                      "<script type=\"text/javascript\" src=\"jquery-1.8.1.min.js\"> </script>" \
+                      "<script type=\"text/javascript\" src=\"jquery.autogrowtextarea.min.js\"> </script>" \
+                      "<link rel=\"stylesheet\" type=\"text/css\" href=\"blog.css\">"
+                      "<meta name = \"viewport\" content = \"width = 300, initial-scale = 1.0, user-scalable = yes\">" \
+                      "</head>" \
+                      "<html>" \
+                      "<body>" \
+                      "<div> " \
+                      "<h1>%@</h1>" \
+                      "<subheading>BY %@</subheading>&nbsp&nbsp&nbsp&nbsp" \
+                      "<subheading>%@</subheading>" \
+                      "  </li><mydivider>___________________________________</mydivider> <np>%@" \
+                      " <strong>Notes:</strong> </br> <ul> [raw_html_snippet id=\"baccnote\"] </ul></np> " \
+                      "</br></br></br></br></br></br></br></br></br></br></br> </div>" \
+                      "</body>" \
+                      "</html>"
+                      ,
+                      post.title, [post.author uppercaseString], [formatter stringFromDate:post.postDate], post.htmlContent
+                      ];
     
-
+    html = [ArticleFormatter insertTextAreas:html withPost:post];
     
-    NSString* htmlString = [NSString stringWithFormat:@"%@%@%@ <div> %@%@&nbsp&nbsp&nbsp&nbsp%@  </li><mydivider>___________________________________</mydivider> <np>%@</np> </br></br></br></br></br></br></br></br></br></br></br> </div>",metaString,javaScript,cssString,titleString,authorString,dateString,contentString ];
+    NSLog(@"%@", html);
     
-    
-    return [ArticleFormatter insertTextAreas:htmlString withPost:post];
+    return html;
 }
 
 +(NSString*)insertTextAreas:(NSString*)htmlIn withPost:(Post*)post
@@ -86,7 +97,6 @@
     }
     NSString *lastLocationString = [htmlIn substringFromIndex:lastLocation];
     mutableHtml = [NSString stringWithFormat:@"%@%@%@});	</script>", mutableHtml,lastLocationString,jqueryString];
-    
     
     return mutableHtml;
 }

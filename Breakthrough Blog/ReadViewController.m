@@ -40,7 +40,12 @@
     [Note getNotesForPostId:post.pid];
     post.tempImageView = backgroundImage;
     [[webViewContainer layer] setCornerRadius:3];
-    [contentView loadHTMLString:[ArticleFormatter formatPostToHtml:post] baseURL:[NSURL URLWithString:@"http://noah.tecarta.com/grow/"]];
+    
+    NSString *baseUrlString = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"baseurl"];
+
+    NSURL *baseUrl = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/", [baseUrlString stringByReplacingOccurrencesOfString:@" " withString:@"%20"]]];
+
+    [contentView loadHTMLString:[ArticleFormatter formatPostToHtml:post] baseURL:baseUrl];
 
     [backgroundImage setImage:post.blurredImage];
 }

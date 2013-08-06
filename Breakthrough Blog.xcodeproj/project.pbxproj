@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2778518917B15F0C00B6B9D2 /* baseurl in Resources */ = {isa = PBXBuildFile; fileRef = 2778518817B15F0C00B6B9D2 /* baseurl */; };
 		E80789341784891A00B25D10 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E80789331784891A00B25D10 /* Default-568h@2x.png */; };
 		E80789381784892B00B25D10 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E80789371784892B00B25D10 /* Default@2x.png */; };
 		E807893A17848BD900B25D10 /* HomeViewControllerTall.xib in Resources */ = {isa = PBXBuildFile; fileRef = E807893917848BD900B25D10 /* HomeViewControllerTall.xib */; };
@@ -135,6 +136,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2778518817B15F0C00B6B9D2 /* baseurl */ = {isa = PBXFileReference; lastKnownFileType = folder; path = baseurl; sourceTree = "<group>"; };
 		E80789331784891A00B25D10 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		E80789371784892B00B25D10 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		E807893917848BD900B25D10 /* HomeViewControllerTall.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewControllerTall.xib; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 		E8A36B681768FC0B00DA2BB6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2778518817B15F0C00B6B9D2 /* baseurl */,
 				E8474436178F24DF001A61CA /* InitialImages */,
 				E82441371778D51800EC8CFC /* bacc_wp.db */,
 				E82441331778CBBD00EC8CFC /* Color-Blob-Background-iPhone5.png */,
@@ -724,6 +727,7 @@
 				E8B9771017A0A5C3000B1BF7 /* mail-icon.png in Resources */,
 				E8B9771217A0AA4F000B1BF7 /* sample-note.png in Resources */,
 				E85F199117A6F49E00EF24BE /* icon114.png in Resources */,
+				2778518917B15F0C00B6B9D2 /* baseurl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
